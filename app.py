@@ -233,45 +233,6 @@ def newfileupload():
     #return json.dumps(insert.addnewpost(request.data,actualfilename,current_user))
 
 
-@app.route('/api/createfolder',methods=['POST'])
-@login_required
-def createnewfolder():
-    """
-    function to create folder.
-    """
-    data=json.loads(request.data)
-    parentid = data["parentid"]
-    folderlist = data["folderlist"]
-    listlen = len(folderlist)
-    if listlen > 0:
-        for i in xrange(listlen):
-            fileid = str(uuid.uuid4())
-            try:
-                insert.createfolder(parentid,fileid,folderlist[i],current_user)
-            except Exception as e:
-                print e
-                print 'invalid'
-        return 'Successfully created folder(s)'
-    else:
-        return 'No folders created'
-
-@app.route('/api/movefiles',methods=['POST'])
-@login_required
-def movefiles():
-    """
-    function to move files.
-    """
-    data=json.loads(request.data)
-    parentid = data["parentid"]
-    filelist = data["filelist"]
-    if len(filelist) > 0:
-        try:
-            return update.movefiles(parentid,filelist,current_user)
-        except Exception as e:
-            print e
-            print 'invalid'
-    else:
-        return 'No folders created'
 
 ################################################################
 
