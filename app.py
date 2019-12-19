@@ -300,7 +300,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/fileuploadfolder/')
 app.config['MAX_CONTENT_LENGTH'] = 125 * 1024 * 1024
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config['ALLOWED_EXTENSIONS'] = set(['jpg','jpeg','png','PNG','gif','GIF','JPG','xls','xlsx','pdf','doc','docx','csv','arff','txt','bmp','tiff','zip','tar.gz','z','rar','sql','pem','txt'])
+app.config['ALLOWED_EXTENSIONS'] = set(['mp4'])
 app.config['static_url_path'] ='/static'
 app.config['SECRET_KEY'] = 'AZXSDM11233108123A'
 
