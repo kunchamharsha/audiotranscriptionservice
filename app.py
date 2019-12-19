@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(0,'./crud')
 
-from flask import Flask, render_template,request,redirect,url_for,send_file
+from flask import Flask, render_template,request,redirect,url_for,send_file,Response
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 from flask_admin import Admin
@@ -21,10 +21,11 @@ import os
 import registration
 import read,insert,delete,update
 
+import re 
 
 
 from models import User, Filedetails
-
+from config import SECRET_KEY
 
 
 #Initialising flask login manager
@@ -77,7 +78,7 @@ def onboardingpage():
 
 
 @app.route('/login/<notification>')
-def onboardingpagewithnotification(notification):
+def onboardingpagewithnotification(notification,register=False,error=None):
     """
     Function to render a login page with a notification
     """
@@ -85,10 +86,9 @@ def onboardingpagewithnotification(notification):
         current_user.email
         return redirect(url_for('home'))
     except AttributeError:
-        print 'jumped'
         if notification==None:
             notification='Please login to gain access!'
-        return render_template('registration.html',error='',notification=notification)
+        return render_template('registration.html',error='',notification=notification,register=True)
 
 
 @app.route('/register')
@@ -122,11 +122,26 @@ def register_user():
     """
     try:
         data=request.form
-        result=registration.registeruser(data)
-        return redirect(url_for('onboardingpagewithnotification',notification='Registered successfully please login.'))
+        print(data)
+        if data['email'] == '':
+            raise Exception('Enter Email ID')
+        else:
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if (re.search(regex,data['email'])) == None:  
+                raise Exception("Invalid Email ID, Please enter correct Email ID")  
+        if data['pwd'] == '':
+            raise Exception('Enter Password')
+        else:
+            if len(data['pwd'])<6:
+                raise Exception('Password too short')
+        try:
+            registration.registeruser(data)
+        except Exception as e:
+            raise Exception('Email ID Exists')
+        return render_template('registration.html',notification='Registered successfully please login.')
     except Exception as e:
         print e
-        return  redirect(url_for('onboardingpagewithnotification',notification='Registration Failed because the account already exists.'))
+        return render_template('registration.html',error=str(e),register=True)
 
 @app.route('/api/authenticate', methods=['POST'])
 def loginauthorisation():
@@ -204,7 +219,7 @@ def deletefile():
 @login_required
 def newfileupload():
     """
-    function to upload user to server.
+    function to upload mp4 files to server.
     """
 
     parentid = request.form['parentid']
@@ -217,7 +232,7 @@ def newfileupload():
             print files
             if files and allowed_file(files.filename):
                 actualfilename=files.filename
-                filename = str(uuid.uuid4())
+                filename = str(uuid.uuid4())+'.mp4'
                 files.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
                 try:
                     json.dumps(insert.addfile(parentid,filename,actualfilename,current_user))
@@ -225,8 +240,7 @@ def newfileupload():
                     print e
                     print 'invalid'
             else:
-                print 'skipping'
-                pass
+                return Response("Invalid File Format, Please upload mp4", status=422)
         return 'Successfully uploaded files'
     else:
         return 'No file Uploaded'
@@ -259,11 +273,11 @@ def allowed_file(filename):
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/fileuploadfolder/')
-app.config['MAX_CONTENT_LENGTH'] = 125 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = set(['mp4'])
 app.config['static_url_path'] ='/static'
-app.config['SECRET_KEY'] = 'AZXSDM11233108123A'
+app.config['SECRET_KEY'] = SECRET_KEY
 
 if __name__=='__main__':
     app.run('0.0.0.0',debug=True)

@@ -28,16 +28,42 @@
         
         <div class="col-lg-4 offset-lg-4" style="background-color:#dfe6e9;margin-top:10%;padding:10px;">
                 <ul class="nav nav-pills nav-justified justify-content-center">
+                    {% if register %}                        
+                        
                         <li class="nav-item active">
+                                <a class="nav-link" data-toggle="pill" href="#login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="pill" href="#register">Register</a>
+                            </li>
+                    {% else %}                      
+                    
+                    <li class="nav-item">
                             <a class="nav-link active" data-toggle="pill" href="#login">Login</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" data-toggle="pill" href="#register">Register</a>
                         </li>
+
+                    {% endif %}
                 </ul>
-                <div class="tab-content" style="padding:10px;">                    
+                <div class="tab-content" style="padding:10px;">    
+                    {% if register %}                                                            
+                    <div id="register"  class="tab-pane active">
+                    {% else %}
                     <div id="register"  class="tab-pane fade">
+                    {% endif %}
                             <form method="POST" action="/api/register">
+                                    {% if error %}
+                                        <div class="alert alert-danger">
+                                                <p>{{error}}</p> 
+                                        </div>
+                                    {% endif %}   
+                                    {% if notification %}
+                                        <div class="alert alert-success">
+                                                <strong>{{notification}}</strong> 
+                                        </div>
+                                    {% endif %}  
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Email address</label>
                                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" placeholder="Enter email">
@@ -49,7 +75,11 @@
                                 <button type="submit" class="btn btn-primary">Register</button>
                             </form>
                     </div>
-                    <div id="login" class="tab-pane active">
+                    {% if register %}                                                            
+                        <div id="login"  class="tab-pane fade">
+                    {% else %}
+                        <div id="login" class="tab-pane active">
+                    {% endif %}
                                 <form method="POST" action="/api/authenticate">
                                     {% if error %}
                                         <div class="alert alert-danger">
@@ -57,7 +87,7 @@
                                         </div>
                                     {% endif %}   
                                     {% if notification %}
-                                        <div class="alert alert-danger">
+                                        <div class="alert alert-success">
                                                 <strong>{{notification}}</strong> 
                                         </div>
                                     {% endif %}                                             

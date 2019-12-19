@@ -57,8 +57,11 @@ def registeruser(signupformdata):
     """
     Function to onboard a user on to the database. 
     """
-    session = DBSession()
-    user = User(email=signupformdata['email'], userid=str(uuid.uuid4()), password=generate_password_hash(signupformdata['pwd']))
-    session.add(user)
-    session.commit()
-    return 'successful'
+    try:
+        session = DBSession()
+        user = User(email=signupformdata['email'], userid=str(uuid.uuid4()), password=generate_password_hash(signupformdata['pwd']))
+        session.add(user)
+        session.commit()
+        return 'successful'
+    except Exception as e:
+        raise Exception(str(e))

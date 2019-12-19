@@ -98,8 +98,9 @@ app.controller('search',function($scope,$cookies,$http,Upload,toaster){
                         $scope.activategif=false;
                         console.log("Hello")
                         toaster.pop('success','File upload successful!')
-                    }, function (resp) {
-                        toaster.pop('fail','Uploading '+files.filename+' failed due to'+resp.status)
+                    }).error(function (resp) {
+                        console.log(resp)
+                        toaster.pop({type:'fail',body:resp,timeout:4000})
                         //console.log('Error status: ' + resp.status);
                     }, function (evt) {
                         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);

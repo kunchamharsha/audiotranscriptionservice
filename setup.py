@@ -7,7 +7,8 @@ array=[
 'enum',
 'requests',
 'python-dateutil',
-'sqlalchemy'
+'sqlalchemy',
+'python-dotenv'
 ]
 
 for package in array:

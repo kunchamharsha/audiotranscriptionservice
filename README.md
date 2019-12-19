@@ -1,31 +1,18 @@
-# Beeruva
-Beeruva is a self-hosted file hosting system. For organisations or individuals who'd like to store their data on their own private cloud open drive helps them manage their files on their server. 
+# Mynah
+Mynah is a voice to text transcription service for users to upload their mp4 and store its responses
 
 ## Description
 
 Beeruva provides 
 
-* Safe and Authorised access to users files from anywhere (provided you have access to the server)
+* Safe and Authorised access to user's Mp4 files from anywhere in the world (provided you have access to the server :D )
 * Intuitive interface to upload, download,rename and delete files
+* Google STT based voice to text conversion
 
-Upcoming Features
-
-* File Sharing 
-* Encryption
-* On the fly compression 
-* File upload options to object storage services like s3 from aws
-* User Logs for admins
-* Drive statistics
-* File preview 
-* Android/IOS app to access your data from anywhere 
-* Responsive Interface to access the files from mobile browsers
-* Error Monitoring
 
 # Product Screenshots
 
 ![alt text](https://raw.githubusercontent.com/kunchamharsha/beeruva/master/screenshots/loginpage.png)
-
-![alt text](https://raw.githubusercontent.com/kunchamharsha/beeruva/master/screenshots/mainpage.png)
 
 
 
@@ -65,9 +52,29 @@ Python packages used
 
 
 ## Installation 
+
+### Setting up via script
+
+I have written a bash script to install a Virtual Environment and then Generate all the required packages. 
+
+> sh setup.sh
+
+This will install and start the server.
+To start it when needed
+
+> source venv/bin/activate
+
+This will activate the virtual environment
+
+> python app.py
+
+This will start the server.
+
+### Setting up manually
+
 Create a virtualenv
 
->virtualenv venv
+>virtualenv -p python2 venv
 
 Activate virtualenv
 
@@ -186,12 +193,7 @@ functions
 
 * rename: to rename an uploaded file, right click on the file and click rename
 
-* info: to get information about the file, right click on the file and click info 
-
-
-## Development Log
-
-Access development log at [tymline.co/opendrive](https://tymline.co/ramharsha/opendrive)
+* info: to get information about the file, right click on the file and click info
 
 ## Scope of Improvement
 
