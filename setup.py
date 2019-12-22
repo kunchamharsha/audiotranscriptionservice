@@ -8,7 +8,10 @@ array=[
 'requests',
 'python-dateutil',
 'sqlalchemy',
-'python-dotenv'
+'python-dotenv',
+'moviepy',
+'pydub',
+'speechrecognition'
 ]
 
 for package in array:

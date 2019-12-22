@@ -49,24 +49,15 @@ Python packages used
 
 ## Installation 
 
+### API service prerequisite
+
+The system was designed using Google speech to text service.Sign up for the service and download the credentials and set the credential path in the systen.
+
+export GOOGLE_APPLICATION_CREDENTIALS="[PATH]"
+
+
 ### Setting up via script
 
-I have written a bash script to install a Virtual Environment and then Generate all the required packages. 
-
-> sh setup.sh
-
-This will install and start the server.
-To start it when needed
-
-> source venv/bin/activate
-
-This will activate the virtual environment
-
-> python app.py
-
-This will start the server.
-
-### Setting up manually
 
 Create a virtualenv
 
@@ -86,7 +77,7 @@ Once this is done, using models build the db and place the file in crud folder u
 
 Move the file from db model from models to crud
 
->mv beeruva.db ../crud/
+>mv mynah.db crud/
 
 After this, we are ready to use the tool run the following command
 
