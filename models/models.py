@@ -4,7 +4,7 @@ from sqlalchemy import Column, Boolean, VARCHAR, Integer, String, DateTime, Fore
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.dialects.sqlite import TEXT
 
-engine = create_engine('sqlite:///beeruva.db', encoding="utf-8")
+engine = create_engine('sqlite:///mynah.db', encoding="utf-8")
 
 Base = declarative_base() 
 DBSession = sessionmaker(bind=engine)
@@ -15,6 +15,7 @@ class User(Base):
     userid = Column(VARCHAR(36), primary_key=True)
     email = Column(VARCHAR(256),unique=True)    
     password = Column(VARCHAR(256))
+    apitoken= Column(VARCHAR(12))
     def is_active(self):
         """True, as all users are active."""
         return True
@@ -41,6 +42,12 @@ class Filedetails(Base):
     filetype=Column(VARCHAR(5))
     fileuploadedon=Column(DateTime)
 
+class Transcriptiondata(Base):
+    __tablename__='transcriptiondata'
+    id=Column(VARCHAR(36),primary_key=True)
+    fileid=Column(VARCHAR(36),ForeignKey('filedetails.fileid'), nullable = False)
+    response=Column(TEXT)
+    status=Column(Boolean)
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)

@@ -4,14 +4,15 @@ from sqlalchemy.orm.exc import NoResultFound
 import sys
 from werkzeug.security import generate_password_hash,check_password_hash
 import uuid
+import os
 
 sys.path.insert(0,'./models')
 
 from models import Base,User,Filedetails
+from binascii import hexlify
 
 
-
-engine = create_engine('sqlite:///crud/beeruva.db')
+engine = create_engine('sqlite:///crud/mynah.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
@@ -53,13 +54,17 @@ def user_loader(user_id):
         session.close()
         return None
 
+def generateapitoken():
+    key=hexlify(os.urandom(12))
+    return key
+
 def registeruser(signupformdata):
     """
     Function to onboard a user on to the database. 
     """
     try:
         session = DBSession()
-        user = User(email=signupformdata['email'], userid=str(uuid.uuid4()), password=generate_password_hash(signupformdata['pwd']))
+        user = User(email=signupformdata['email'], userid=str(uuid.uuid4()), password=generate_password_hash(signupformdata['pwd']),apitoken=generateapitoken())
         session.add(user)
         session.commit()
         return 'successful'

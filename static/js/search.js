@@ -7,7 +7,7 @@ app.controller('search',function($scope,$cookies,$http,Upload,toaster){
         var req_obj = {
             "folderid" : $cookies.get("parentid")
         }
-        return $http.post('/api/getchildren', req_obj).then(function(response,status){
+        return $http.post('/api/listaudiodata', req_obj).then(function(response,status){
             $scope.filedata=response.data;
             $scope.listoffiles=$scope.filedata.reverse()
         });

@@ -235,3 +235,25 @@ a.article, a.article:hover {
     position: fixed;
     bottom: 0;
 }
+
+    .nopadding {
+      padding: 0px;
+    }
+
+    .rightfloat {
+      float: right;
+    }
+
+    .leftfloat {
+      float: left;
+    }
+
+    .addedpadding {
+      padding: 15px;
+      background-color: #e9ecef;
+    }
+
+    .smallcolumn{
+        width: 350px;
+        word-break:break-all;
+    }

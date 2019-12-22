@@ -25,25 +25,8 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-  <title>Beeruva- Home</title>
-  <style>
-    .nopadding {
-      padding: 0px;
-    }
-
-    .rightfloat {
-      float: right;
-    }
-
-    .leftfloat {
-      float: left;
-    }
-
-    .addedpadding {
-      padding: 15px;
-      background-color: #e9ecef;
-    }
-  </style>
+  <title>Mynah</title>
+  
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
@@ -55,7 +38,7 @@
   <div class="wrapper">
     <nav id="sidebar">
       <div class="sidebar-header">
-        <p style="font-size:24px;color:white;padding-left:25px;">Beeruva</p>
+        <p style="font-size:24px;color:white;padding-left:25px;">Mynah</p>
       </div>
       <div style="text-align: center; ">
         <!--label class="btn btn-primary" >
@@ -73,7 +56,7 @@
           </li>
           <li>
             <p style="transform: translateX(-50%); margin-left: 50%;font-size:14px;">
-              (50 mb max)
+              (7 mb max)
             </p>
           </li>
         </div>
@@ -196,32 +179,28 @@
       <toaster-container toaster-options="{'time-out':1000}"></toaster-container>
       <div class="container">
         <div class="row">
-          <div ng-repeat="files in listoffiles track by $index" class="card" style="width: 250px; margin:5px;height:165px;" context-menu="menuOptions" context-menu-empty-text="'SOME TEXT FOR EMPTY'">
-            <div style="max-height:150px;">
-              <img class="img-responsive card-img-top" ng-if='files.fileext!="jpg" && files.fileext!="png" && files.fileext!="jpeg"' style="height:120px;object-fit:contain;" onerror="this.src='/images/default.png'" ng-src="/images/[{[files.filetype == 'd' ? 'd' : files.fileext]}].png"
-                alt="Card image cap" ng-cloak>
-              <img class="img-responsive card-img-top" ng-if='files.fileext=="jpg" || files.fileext=="png" || files.fileext=="jpeg"' style="height:120px;object-fit:contain;" ng-src="/cdn/[{[files.fileid]}]" alt="Card image cap" ng-cloak>
-            </div>
-            <div class="card-footer" style="max-height:45px;">
-              <div class="media">
-
-                <div class="media-body">
-                  <div style="white-space:nowrap;text-overflow:ellipsis;width:175px;overflow: hidden;display:inline-block;">
-                    <span>[{[files.filename]}]</span>
-                  </div>
-                </div>
-
-                <div class="media-right" ng-if='files.filetype == "f"'>
-                  <a href="/cdn/[{[files.filename]}]" download>
-                                                    <i class="fas fa-download">
-                                                    </i>
-                                                </a>
-                </div>
-              </div>
-
-
-            </div>
-          </div>
+          <table class="table table-striped" style="width:100%;">
+            <tbody>
+              <thead>
+                <th>Filename</th>
+                <th>Download</th>
+                <th>Response</th>
+              </thead>
+              <tr ng-repeat="file in listoffiles track by $index" context-menu="menuOptions" context-menu-empty-text="'SOME TEXT FOR EMPTY'">
+                <td class="smallcolumn">[{[file.filename]}]</td>
+                <td>  
+                    <a ng-href="/cdn/[{[file.fileid]}]" download>
+                      <i class="fas fa-download">
+                      </i>
+                    </a>
+              </td>
+              <td>
+                [{[file.response]}]
+              </td>
+              </tr>
+            </tbody>
+          </table>
+         
         </div>
       </div>
     </div>

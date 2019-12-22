@@ -20,14 +20,15 @@ import uuid
 import os
 import registration
 import read,insert,delete,update
-
+from flask import jsonify
 import re 
 
 
 from models import User, Filedetails
-from config import SECRET_KEY
+from configuration.config import SECRET_KEY
 
-
+from audioconverter import ConvertVideoToAudio
+import speechtotext
 #Initialising flask login manager
 login_manager = LoginManager()
 
@@ -149,7 +150,6 @@ def loginauthorisation():
     Function to authorise a username and password against the credentials
     present in the database and redirect the user to home page.
     """
-    print request.form
     user = registration.authenticateuser(request.form)
     if user == None:
         return render_template('registration.html', error='Invalid credentials. Please enter correct details.')
@@ -176,14 +176,14 @@ def returnfiles():
     """
     return read.listofilesuploaded(current_user)
 
-@app.route('/api/getchildren',methods=['POST'])
+@app.route('/api/listaudiodata',methods=['POST'])
 @login_required
 def getchildren():
     """
     Function to return list of files uploaded by the user.
     """
     data=json.loads(request.data)
-    return read.getchildren(data["folderid"], current_user)
+    return read.audiodata(data["folderid"], current_user)
 
 @app.route('/api/getdescendents',methods=['POST'])
 @login_required
@@ -232,13 +232,22 @@ def newfileupload():
             print files
             if files and allowed_file(files.filename):
                 actualfilename=files.filename
-                filename = str(uuid.uuid4())+'.mp4'
-                files.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+                fileid = str(uuid.uuid4())
+                filename= fileid+'.mp4'
+                filepath=os.path.join(app.config['UPLOAD_FOLDER'],filename)
+                files.save(filepath)
                 try:
-                    json.dumps(insert.addfile(parentid,filename,actualfilename,current_user))
+                    json.dumps(insert.addfile(parentid,fileid,actualfilename,current_user))
                 except Exception as e:
                     print e
-                    print 'invalid'
+                    return Response('Could not upload file, Please Retry Again.')
+                audiofilepath=ConvertVideoToAudio(filepath)
+                transcribedata=speechtotext.convert(audiofilepath)
+                try:
+                    insert.AddTranscribedData(fileid,transcribedata)
+                except Exception as e:
+                    print(e)
+                    return Response('Could not add Transcribed Data')
             else:
                 return Response("Invalid File Format, Please upload mp4", status=422)
         return 'Successfully uploaded files'
@@ -258,11 +267,28 @@ def getfile(fileid):
     """
     filedata=read.check_access(fileid,current_user)
     if filedata['access_state']==1:
-        return send_file('static/fileuploadfolder/'+fileid, attachment_filename=filedata['filename'])
+        return send_file('static/fileuploadfolder/'+fileid+'.mp4', attachment_filename=filedata['filename'])
     elif filedata['access_state']==0:
         return 'Access Denied'
 
+@app.route('/api/transcriptiondata/',methods=['GET'])
+def getdata():
+    fileid=request.args.get('fileid')
+    sort=request.args.get('sortby')
+    apitoken=request.args.get('apitoken')
+    try:
+        data=read.apidata(apitoken,fileid,sort)
+    except Exception as e:
+        return Response(e,401)
+    return jsonify(data)
 
+@app.route('/getapitoken',methods=['GET'])
+@login_required
+def getapitoken():
+    """
+    Function to return the api token of a user. 
+    """
+    return json.dumps({'apitoken':current_user.apitoken,'endpointurl':'/api/transcriptiondata','Optional params':{'fileid':'fileid','sortby':['created_at']}})
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -273,7 +299,7 @@ def allowed_file(filename):
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/fileuploadfolder/')
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 7 * 1024 * 1024
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = set(['mp4'])
 app.config['static_url_path'] ='/static'

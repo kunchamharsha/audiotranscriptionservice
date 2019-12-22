@@ -6,14 +6,15 @@ from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash,check_password_hash
 import sys
+import uuid
 sys.path.insert(0, '../models/')
 
 
-from models import Base,User,Filedetails
+from models import Base,User,Filedetails,Transcriptiondata
 import datetime
 
 
-engine = create_engine('sqlite:///crud/beeruva.db')
+engine = create_engine('sqlite:///crud/mynah.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
@@ -38,3 +39,11 @@ def createfolder(parentid,fileid,actualfilename,currentuser):
     session.commit()
     session.close()
     return 'Successfully Created'
+
+def AddTranscribedData(fileid,textdata):
+    session=DBSession()
+    textrecord=Transcriptiondata(id=str(uuid.uuid4()),fileid=fileid,response=textdata,status=True)
+    session.add(textrecord)
+    session.commit()
+    session.close()
+    return 'Successfully Added'

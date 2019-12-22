@@ -3,21 +3,13 @@ Mynah is a voice to text transcription service for users to upload their mp4 and
 
 ## Description
 
-Beeruva provides 
+Mynah provides 
 
 * Safe and Authorised access to user's Mp4 files from anywhere in the world (provided you have access to the server :D )
 * Intuitive interface to upload, download,rename and delete files
 * Google STT based voice to text conversion
 
-
-# Product Screenshots
-
-![alt text](https://raw.githubusercontent.com/kunchamharsha/beeruva/master/screenshots/loginpage.png)
-
-
-
 # Setup process
-
 
 ## Prerequisites
 
@@ -35,6 +27,10 @@ Languages Used
 
 ORM Used
 * SQLAlchemy
+
+External Utilities
+
+* FFMPEG
 
 Python packages used
 
@@ -177,7 +173,7 @@ functions
 
 * url:'/'-This is the login and registration page you can signup or sign in to the platform using this page
 
-* url:'/home'-This page has features to add, delete and download the files the users have uploaded
+* url:'/search'-This page has features to add, delete and download the files the users have uploaded
 
 ## Features
 
@@ -194,8 +190,4 @@ functions
 * rename: to rename an uploaded file, right click on the file and click rename
 
 * info: to get information about the file, right click on the file and click info
-
-## Scope of Improvement
-
-please raise issues or request feature changes via the issues section in github
 
