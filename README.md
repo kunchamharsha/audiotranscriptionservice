@@ -112,6 +112,8 @@ you can also raise an issue and I will get back to you as soon as possible
 
 * url:'/search'-This page has features to add, delete and download the files the users have uploaded
 
+* url:'getapitoken'- Login protected url where you can find the details of the API token and Api endpoint and its pa
+
 ## Features
 
 * login: enter username and password to login to the application
