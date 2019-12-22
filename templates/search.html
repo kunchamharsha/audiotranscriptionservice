@@ -182,21 +182,24 @@
           <table class="table table-striped" style="width:100%;">
             <tbody>
               <thead>
+                <th>Fileid</th>
                 <th>Filename</th>
-                <th>Download</th>
                 <th>Response</th>
+                <th>Download</th>
               </thead>
               <tr ng-repeat="file in listoffiles track by $index" context-menu="menuOptions" context-menu-empty-text="'SOME TEXT FOR EMPTY'">
+                <td>[{[file.fileid]}]</td>
                 <td class="smallcolumn">[{[file.filename]}]</td>
+                <td>
+                  [{[file.response]}]
+                </td>
                 <td>  
                     <a ng-href="/cdn/[{[file.fileid]}]" download>
                       <i class="fas fa-download">
                       </i>
                     </a>
-              </td>
-              <td>
-                [{[file.response]}]
-              </td>
+                </td>
+             
               </tr>
             </tbody>
           </table>

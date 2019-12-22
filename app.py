@@ -276,8 +276,9 @@ def getdata():
     fileid=request.args.get('fileid')
     sort=request.args.get('sortby')
     apitoken=request.args.get('apitoken')
+    order=request.args.get('order')
     try:
-        data=read.apidata(apitoken,fileid,sort)
+        data=read.apidata(apitoken,fileid,sort,order)
     except Exception as e:
         return Response(e,401)
     return jsonify(data)
@@ -288,7 +289,7 @@ def getapitoken():
     """
     Function to return the api token of a user. 
     """
-    return json.dumps({'apitoken':current_user.apitoken,'endpointurl':'/api/transcriptiondata','Optional params':{'fileid':'fileid','sortby':['created_at']}})
+    return json.dumps({'apitoken':current_user.apitoken,'endpointurl':'/api/transcriptiondata','Optional params':{'fileid':'fileid','sortby':['created_date'],'order':['asc','desc']}})
 
 def allowed_file(filename):
     return '.' in filename and \

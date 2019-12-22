@@ -103,6 +103,35 @@ you can also raise an issue and I will get back to you as soon as possible
 
 ## Endpoints and descriptions
 
+
+### Navigating through the application
+
+## Webpages
+
+* url:'/'-This is the login and registration page you can signup or sign in to the platform using this page
+
+* url:'/search'-This page has features to add, delete and download the files the users have uploaded
+
+## Features
+
+* login: enter username and password to login to the application
+
+* logout: click on logout button at the bottom on the left pane
+
+* upload: click on an upload button and upload mulitple files at once
+
+* delete: right click on the file to get delete option
+
+* download:to download the file click on the download button below the file
+
+* rename: to rename an uploaded file, right click on the file and click rename
+
+* info: to get information about the file, right click on the file and click info
+
+
+
+### Function Descriptions
+
 Filename app.py
 
 functions
@@ -167,27 +196,4 @@ functions
         Function to delete filedata from the database.
 
 
-# Navigating through the application
-
-## Webpages
-
-* url:'/'-This is the login and registration page you can signup or sign in to the platform using this page
-
-* url:'/search'-This page has features to add, delete and download the files the users have uploaded
-
-## Features
-
-* login: enter username and password to login to the application
-
-* logout: click on logout button at the bottom on the left pane
-
-* upload: click on an upload button and upload mulitple files at once
-
-* delete: right click on the file to get delete option
-
-* download:to download the file click on the download button below the file
-
-* rename: to rename an uploaded file, right click on the file and click rename
-
-* info: to get information about the file, right click on the file and click info
 

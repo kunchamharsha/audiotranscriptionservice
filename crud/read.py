@@ -10,6 +10,7 @@ from werkzeug.security import generate_password_hash,check_password_hash
 import sys
 from flask import jsonify
 sys.path.insert(0, '../models/')
+from sqlalchemy import desc
 
 
 from models import Base,User,Filedetails,Transcriptiondata
@@ -60,7 +61,7 @@ def audiodata(folderid, currentuser):
         listoffiles.append(filedata)
     return jsonify(listoffiles)
 
-def apidata(apitoken,fileid=None,sort=None):
+def apidata(apitoken,fileid=None,sort=None,order=None):
     """
     Get API data.
     """
@@ -75,8 +76,14 @@ def apidata(apitoken,fileid=None,sort=None):
     if fileid!=None:
         files=files.filter(Filedetails.fileid==fileid)
     if sort!=None:
-        if sort=='created_data':
-            files=files.order_by(fileuploadedon)
+        if sort=='created_date':
+            if order!=None:
+                if order=='asc':
+                    files=files.order_by(Filedetails.fileuploadedon)
+                else:
+                    files=files.order_by(desc(Filedetails.fileuploadedon))
+            else:
+                files=files.order_by(Filedetails.fileuploadedon)
     listoffiles=[]    
     for row in files:
         filesdata=row[0]
