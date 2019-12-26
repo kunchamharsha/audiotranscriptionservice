@@ -124,7 +124,8 @@ app.controller('search',function($scope,$cookies,$http,Upload,toaster){
         },{
             text: 'Delete',
             click: function ($itemScope, $event, modelValue, text, $li) {
-                $scope.deleteconfirmation($itemScope.files);
+                console.log($itemScope)
+                $scope.deleteconfirmation($itemScope.file);
             }
         },{
             text: 'Info',

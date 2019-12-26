@@ -79,6 +79,14 @@ Move the file from db model from models to crud
 
 >mv mynah.db crud/
 
+Create a .env file in the configuration folder
+
+> touch .env
+
+add a secret key 
+
+> SECRET_KEY='XXXXXXXXXXXXXXXXXXXXXXXX'
+
 After this, we are ready to use the tool run the following command
 
 >python app.py
