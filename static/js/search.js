@@ -119,7 +119,7 @@ app.controller('search',function($scope,$cookies,$http,Upload,toaster){
         {
             text:'Rename',
             click: function($itemScope, $event, modelValue, text, $li){
-                $scope.renameconfirmation($itemScope.files);
+                $scope.renameconfirmation($itemScope.file);
             }
         },{
             text: 'Delete',

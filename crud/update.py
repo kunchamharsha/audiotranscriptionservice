@@ -13,7 +13,7 @@ from models import Base,User,Filedetails
 import datetime
 
 
-engine = create_engine('sqlite:///crud/beeruva.db')
+engine = create_engine('sqlite:///crud/mynah.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
