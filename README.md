@@ -87,6 +87,10 @@ add a secret key
 
 > SECRET_KEY='XXXXXXXXXXXXXXXXXXXXXXXX'
 
+add the SQLITE file
+
+> DB_STRING='/path/to/sqlite.db'
+
 After this, we are ready to use the tool run the following command
 
 >python app.py
