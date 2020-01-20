@@ -34,7 +34,7 @@ def list_of_files_uploaded(currentuser):
     finally:
         session.close()
 
-def audio_data(folderid, currentuser):
+def audio_data(currentuser):
     """
     Function to return list of files under given folder.
     """

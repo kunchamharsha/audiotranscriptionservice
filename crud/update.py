@@ -20,15 +20,18 @@ def rename_file(currentuser,data):
     """
     Function to update file name in db.
     """
+    if data['filerename']=='' or data['filerename']==None:
+        raise Exception('Invalid filename')
     session=DBSession()
     try:
         filedetails=session.query(Filedetails).filter_by(fileid=data['fileid']).filter_by(userid=currentuser.userid).one()
         filedetails.filename=data['filerename']
         session.commit()
-        session.close()
         return 'Successfully Uploaded'
     except NoResultFound:
-        return 'You are not authorised to modify this file.'
+        raise Exception('You are not authorised to modify this file.')
+    finally:
+        session.close()
 
 def move_files(parentid, filelist, currentuser):
     """
@@ -42,7 +45,8 @@ def move_files(parentid, filelist, currentuser):
              f.parentid = parentid
 
         session.commit()
-        session.close()
         return 'Successfully Uploaded'
     except NoResultFound:
         return 'You are not authorised to modify this file.'
+    finally:
+        session.close()

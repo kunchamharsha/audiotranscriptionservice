@@ -144,7 +144,7 @@ def get_children():
     Function to return list of files uploaded by the user.
     """
     data=json.loads(request.data)
-    return read.audio_data(data["folderid"], current_user)
+    return read.audio_data(current_user)
 
 @app.route('/api/getdescendents',methods=['POST'])
 @login_required
@@ -162,8 +162,11 @@ def rename_file():
     Function to rename a file.
     """
     data=json.loads(request.data)
-    return update.rename_file(current_user,data)
-
+    try:
+        return update.rename_file(current_user,data)
+    except Exception as e:
+        print(str(e))
+        return Response(str(e),422)
 
 @app.route('/api/deletefile',methods=['GET'])
 @login_required
@@ -172,6 +175,8 @@ def delete_file():
     Function to delete a file by fileid
     """
     fileid=request.args.get('id')
+    if fileid==None or fileid=='':
+        raise Exception('Invalid fileid')
     return delete.delete_file(fileid,current_user)
 
 
@@ -226,7 +231,7 @@ def get_file(fileid):
     if filedata['access_state']==1:
         return send_file('static/fileuploadfolder/'+fileid+'.mp4', attachment_filename=filedata['filename'])
     elif filedata['access_state']==0:
-        return 'Access Denied'
+        return Response('Access Denied',422)
 
 @app.route('/api/transcriptiondata/',methods=['GET'])
 def get_data():
