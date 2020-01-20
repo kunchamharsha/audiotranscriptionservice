@@ -11,14 +11,12 @@ sys.path.insert(0, '../models/')
 
 from models import Base,User,Filedetails
 import datetime
+import dbengine
+
+DBSession=dbengine.get_object()
 
 
-engine = create_engine('sqlite:///crud/mynah.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-
-
-def renamefile(currentuser,data):
+def rename_file(currentuser,data):
     """
     Function to update file name in db.
     """
@@ -32,7 +30,7 @@ def renamefile(currentuser,data):
     except NoResultFound:
         return 'You are not authorised to modify this file.'
 
-def movefiles(parentid, filelist, currentuser):
+def move_files(parentid, filelist, currentuser):
     """
     Function to update file name in db.
     """

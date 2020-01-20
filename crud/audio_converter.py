@@ -2,7 +2,7 @@ import moviepy.editor as mp
 from pydub import AudioSegment
 import os
 
-def ConvertVideoToAudio(videopath):
+def video_to_audio(videopath):
     wavaudiopath=videopath.replace('.mp4','.wav')
     clip = mp.VideoFileClip(videopath)
     clip.audio.write_audiofile(wavaudiopath)

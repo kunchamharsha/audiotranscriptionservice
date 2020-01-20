@@ -5,19 +5,16 @@ import sys
 from werkzeug.security import generate_password_hash,check_password_hash
 import uuid
 import os
-
 sys.path.insert(0,'./models')
-
 from models import Base,User,Filedetails
 from binascii import hexlify
+import dbengine
 
 
-engine = create_engine('sqlite:///crud/mynah.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
+DBSession=dbengine.get_object()
 
 
-def authenticateuser(loginformdata):  # loginverification
+def authenticate_user(loginformdata):  # loginverification
     """
     Function to authenticate user against the credentials saved in database.
     """
@@ -36,8 +33,9 @@ def authenticateuser(loginformdata):  # loginverification
         session.close()
         return None
     except Exception, e:
-        session.close()
         return None
+    finally:
+        session.close()
 
 
 def user_loader(user_id):
@@ -48,25 +46,27 @@ def user_loader(user_id):
     """
     try:
         user = session.query(User).filter_by(userid=user_id).one()
-        session.close()
         return user
     except NoResultFound:
-        session.close()
         return None
+    finally:
+        session.close()
 
 def generateapitoken():
     key=hexlify(os.urandom(12))
     return key
 
-def registeruser(signupformdata):
+def register_user(signupformdata):
     """
     Function to onboard a user on to the database. 
     """
+    session = DBSession()
     try:
-        session = DBSession()
         user = User(email=signupformdata['email'], userid=str(uuid.uuid4()), password=generate_password_hash(signupformdata['pwd']),apitoken=generateapitoken())
         session.add(user)
         session.commit()
         return 'successful'
     except Exception as e:
         raise Exception(str(e))
+    finally:
+        session.close()
